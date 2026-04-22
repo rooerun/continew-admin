@@ -60,4 +60,10 @@ public class AccountLoginReq extends LoginReq {
      */
     @Schema(description = "验证码标识", example = "090b9a2c-1691-4fca-99db-e4ed0cff362f")
     private String uuid;
+
+    /**
+     * 浏览器指纹
+     */
+    @Schema(description = "浏览器指纹", example = "abc123def456")
+    private String fingerprint;
 }

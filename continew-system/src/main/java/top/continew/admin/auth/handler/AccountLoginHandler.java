@@ -20,6 +20,7 @@ import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.JakartaServletUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +63,11 @@ public class AccountLoginHandler extends AbstractLoginHandler<AccountLoginReq> {
         String username = req.getUsername();
         UserDO user = userService.getByUsername(username);
         boolean isError = ObjectUtil.isNull(user) || !passwordEncoder.matches(password, user.getPassword());
+        // 获取浏览器指纹和IP
+        String fingerprint = req.getFingerprint();
+        String ip = JakartaServletUtil.getClientIP(request);
+        // 记录登录失败次数（用于验证码判断）
+        this.recordLoginErrorCount(fingerprint, ip, isError);
         // 检查账号锁定状态
         this.checkUserLocked(req.getUsername(), request, isError);
         ValidationUtils.throwIf(isError, "用户名或密码不正确");
@@ -74,9 +80,10 @@ public class AccountLoginHandler extends AbstractLoginHandler<AccountLoginReq> {
     @Override
     public void preLogin(AccountLoginReq req, ClientResp client, HttpServletRequest request) {
         super.preLogin(req, client, request);
-        // 校验验证码
-        int loginCaptchaEnabled = optionService.getValueByCode2Int("LOGIN_CAPTCHA_ENABLED");
-        if (GlobalConstants.Boolean.YES.equals(loginCaptchaEnabled)) {
+        // 校验验证码：连续登录失败达到阈值后才需要验证码
+        String fingerprint = req.getFingerprint();
+        String ip = JakartaServletUtil.getClientIP(request);
+        if (this.isCaptchaRequired(fingerprint, ip)) {
             ValidationUtils.throwIfBlank(req.getCaptcha(), "验证码不能为空");
             ValidationUtils.throwIfBlank(req.getUuid(), "验证码标识不能为空");
             String captchaKey = CacheConstants.CAPTCHA_KEY_PREFIX + req.getUuid();
@@ -137,5 +144,59 @@ public class AccountLoginHandler extends AbstractLoginHandler<AccountLoginReq> {
                 .offset(DateField.MILLISECOND, (int)timeToLive)
                 .toString(DatePattern.CHINESE_DATE_TIME_FORMAT)
             : "";
+    }
+
+    /**
+     * 判断是否需要验证码
+     *
+     * @param fingerprint 浏览器指纹
+     * @param ip          IP地址
+     * @return 是否需要验证码
+     */
+    private boolean isCaptchaRequired(String fingerprint, String ip) {
+        // 优先使用浏览器指纹
+        if (StrUtil.isNotBlank(fingerprint)) {
+            String key = CacheConstants.LOGIN_CAPTCHA_ERROR_KEY_PREFIX + fingerprint;
+            Integer errorCount = RedisUtils.get(key);
+            if (ObjectUtil.isNotNull(errorCount) && errorCount >= CacheConstants.LOGIN_CAPTCHA_THRESHOLD) {
+                return true;
+            }
+        }
+        // 指纹无效时使用IP
+        String key = CacheConstants.LOGIN_CAPTCHA_ERROR_KEY_PREFIX + "IP:" + ip;
+        Integer errorCount = RedisUtils.get(key);
+        return ObjectUtil.isNotNull(errorCount) && errorCount >= CacheConstants.LOGIN_CAPTCHA_THRESHOLD;
+    }
+
+    /**
+     * 记录登录失败次数
+     *
+     * @param fingerprint 浏览器指纹
+     * @param ip          IP地址
+     * @param isError     是否登录失败
+     */
+    private void recordLoginErrorCount(String fingerprint, String ip, boolean isError) {
+        String key;
+        // 优先使用浏览器指纹，其次使用IP
+        if (StrUtil.isNotBlank(fingerprint)) {
+            key = CacheConstants.LOGIN_CAPTCHA_ERROR_KEY_PREFIX + fingerprint;
+        } else {
+            key = CacheConstants.LOGIN_CAPTCHA_ERROR_KEY_PREFIX + "IP:" + ip;
+        }
+        // 登录成功清除计数
+        if (!isError) {
+            RedisUtils.delete(key);
+            return;
+        }
+        // 登录失败递增计数
+        Integer currentErrorCount = ObjectUtil.defaultIfNull(RedisUtils.get(key), 0);
+        currentErrorCount++;
+        // 获取密码错误锁定分钟数，用于设置过期时间
+        int lockMinutes = optionService.getValueByCode2Int(PasswordPolicyEnum.PASSWORD_ERROR_LOCK_MINUTES.name());
+        // 如果未配置锁定时间，默认使用30分钟
+        if (lockMinutes <= 0) {
+            lockMinutes = 30;
+        }
+        RedisUtils.set(key, currentErrorCount, Duration.ofMinutes(lockMinutes));
     }
 }

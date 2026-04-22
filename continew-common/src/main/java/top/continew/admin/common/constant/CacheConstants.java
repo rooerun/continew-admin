@@ -67,6 +67,16 @@ public class CacheConstants {
     public static final String USER_PASSWORD_ERROR_KEY_PREFIX = USER_KEY_PREFIX + "PASSWORD_ERROR" + DELIMITER;
 
     /**
+     * 登录验证码失败次数缓存键前缀
+     */
+    public static final String LOGIN_CAPTCHA_ERROR_KEY_PREFIX = USER_KEY_PREFIX + "LOGIN_CAPTCHA_ERROR" + DELIMITER;
+
+    /**
+     * 登录失败需要验证码的阈值
+     */
+    public static final int LOGIN_CAPTCHA_THRESHOLD = 3;
+
+    /**
      * 数据导入临时会话key
      */
     public static final String DATA_IMPORT_KEY = "SYSTEM" + DELIMITER + "DATA_IMPORT" + DELIMITER;

@@ -117,10 +117,30 @@ public class CaptchaController {
     @Log(ignore = true)
     @Operation(summary = "获取图片验证码", description = "获取图片验证码（Base64编码，带图片格式：data:image/gif;base64）")
     @GetMapping("/image")
-    public CaptchaResp getImageCaptcha() {
-        int loginCaptchaEnabled = optionService.getValueByCode2Int("LOGIN_CAPTCHA_ENABLED");
-        if (GlobalConstants.Boolean.NO.equals(loginCaptchaEnabled)) {
-            return CaptchaResp.builder().isEnabled(false).build();
+    public CaptchaResp getImageCaptcha(@RequestParam(required = false) String fingerprint, 
+                                       @RequestParam(required = false) String ip,
+                                       HttpServletRequest request) {
+        // 优先使用浏览器指纹判断
+        if (StrUtil.isNotBlank(fingerprint)) {
+            String key = CacheConstants.LOGIN_CAPTCHA_ERROR_KEY_PREFIX + fingerprint;
+            Integer errorCount = RedisUtils.get(key);
+            // 如果失败次数未达到阈值，返回不需要验证码
+            if (errorCount == null || errorCount < CacheConstants.LOGIN_CAPTCHA_THRESHOLD) {
+                return CaptchaResp.builder().isEnabled(false).build();
+            }
+        } else if (StrUtil.isNotBlank(ip)) {
+            // 指纹不存在时使用IP判断
+            String key = CacheConstants.LOGIN_CAPTCHA_ERROR_KEY_PREFIX + "IP:" + ip;
+            Integer errorCount = RedisUtils.get(key);
+            if (errorCount == null || errorCount < CacheConstants.LOGIN_CAPTCHA_THRESHOLD) {
+                return CaptchaResp.builder().isEnabled(false).build();
+            }
+        } else {
+            // 都未传入时，使用系统配置判断
+            int loginCaptchaEnabled = optionService.getValueByCode2Int("LOGIN_CAPTCHA_ENABLED");
+            if (GlobalConstants.Boolean.NO.equals(loginCaptchaEnabled)) {
+                return CaptchaResp.builder().isEnabled(false).build();
+            }
         }
         String uuid = IdUtil.fastUUID();
         String captchaKey = CacheConstants.CAPTCHA_KEY_PREFIX + uuid;
