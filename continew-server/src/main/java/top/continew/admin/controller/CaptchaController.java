@@ -117,7 +117,7 @@ public class CaptchaController {
     @Log(ignore = true)
     @Operation(summary = "获取图片验证码", description = "获取图片验证码（Base64编码，带图片格式：data:image/gif;base64）")
     @GetMapping("/image")
-    public CaptchaResp getImageCaptcha(@RequestParam(required = false) String fingerprint, 
+    public CaptchaResp getImageCaptcha(@RequestParam(required = false) String fingerprint,
                                        @RequestParam(required = false) String ip,
                                        HttpServletRequest request) {
         // 优先使用浏览器指纹判断

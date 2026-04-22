@@ -12,12 +12,6 @@ spring.datasource:
 #  username: ${DB_USER:root}
 #  password: ${DB_PWD:123456}
 #  driver-class-name: org.postgresql.Driver
-## Liquibase 配置
-spring.liquibase:
-  # 是否启用
-  enabled: true
-  # 配置文件路径
-  change-log: classpath:/db/changelog/db.changelog-master.yaml
 
 --- ### Snail Job 服务端配置
 snail-job:
