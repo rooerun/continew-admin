@@ -41,7 +41,7 @@ import top.continew.admin.system.model.resp.StorageResp;
 import top.continew.admin.system.service.FileService;
 import top.continew.admin.system.service.StorageService;
 import top.continew.starter.core.util.ExceptionUtils;
-import top.continew.starter.core.util.SpringWebUtils;
+import top.continew.starter.core.util.SpringUtils;
 import top.continew.starter.core.util.validation.CheckUtils;
 import top.continew.starter.core.util.validation.ValidationUtils;
 
@@ -189,7 +189,7 @@ public class StorageServiceImpl extends BaseServiceImpl<StorageMapper, StorageDO
                 fileStorageList.addAll(FileStorageServiceBuilder.buildLocalPlusFileStorage(Collections
                     .singletonList(config)));
                 // 注册资源映射
-                SpringWebUtils.registerResourceHandler(MapUtil.of(URLUtil.url(storage.getDomain()).getPath(), storage
+                SpringUtils.registerResourceHandler(MapUtil.of(URLUtil.url(storage.getDomain()).getPath(), storage
                     .getBucketName()));
             }
             case OSS -> {
@@ -217,7 +217,7 @@ public class StorageServiceImpl extends BaseServiceImpl<StorageMapper, StorageDO
         fileStorage.close();
         // 本地存储引擎需要移除资源映射
         if (StorageTypeEnum.LOCAL.equals(storage.getType())) {
-            SpringWebUtils.deRegisterResourceHandler(MapUtil.of(URLUtil.url(storage.getDomain()).getPath(), storage
+            SpringUtils.deRegisterResourceHandler(MapUtil.of(URLUtil.url(storage.getDomain()).getPath(), storage
                 .getBucketName()));
         }
     }

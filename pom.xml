@@ -3,17 +3,11 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <!--
-        下方 parent 为 ContiNew Starter（Continue New Starter）。
-        ContiNew Starter 基于"约定优于配置"的理念，
-        再次精简常规配置，提供一个更为完整的配置解决方案，帮助开发人员更加快速的集成常用第三方库或工具到 Spring Boot Web 应用程序中。
-        ContiNew Starter 包含了一系列经过企业实践优化的依赖包（如 MyBatis-Plus、SaToken），
-        可轻松集成到应用中，为开发人员减少手动引入依赖及配置的麻烦，为 Spring Boot Web 项目的灵活快速构建提供支持。
-    -->
     <parent>
-        <groupId>top.continew.starter</groupId>
-        <artifactId>continew-starter</artifactId>
-        <version>2.15.0</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.13</version>
+        <relativePath/>
     </parent>
 
     <groupId>top.continew.admin</groupId>
@@ -37,11 +31,24 @@
     <properties>
         <!-- 项目版本号 -->
         <revision>4.2.0-SNAPSHOT</revision>
+        
+        <!-- Maven Plugin Versions -->
+        <flatten.version>1.7.3</flatten.version>
+        <spotless.version>3.0.0</spotless.version>
     </properties>
 
     <!-- 全局依赖版本管理 -->
     <dependencyManagement>
         <dependencies>
+            <!-- 导入 ContiNew Starter 依赖 BOM -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-dependencies</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- API 模块（存放 Controller 层代码，打包部署的模块） -->
             <dependency>
                 <groupId>top.continew.admin</groupId>
@@ -90,6 +97,282 @@
                 <artifactId>continew-plugin-generator</artifactId>
                 <version>${revision}</version>
             </dependency>
+
+            <!-- 显式声明使用本地的 API 文档 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-api-doc</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Auth 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-auth-satoken</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-auth-justauth</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Cache 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-cache-redisson</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-cache-jetcache</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Captcha 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-captcha-graphic</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-captcha-behavior</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Data 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-data-mp</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-data-mf</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-data-core</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Encrypt 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-encrypt-field</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-encrypt-password-encoder</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Excel 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-excel-fastexcel</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Extension 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-extension-crud-mp</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-extension-datapermission-mp</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-extension-tenant-mp</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Idempotent Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-idempotent</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 JSON 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-json-jackson</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 License 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-license-core</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Log 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-log-interceptor</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Messaging 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-messaging-mail</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-messaging-websocket</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Ratelimiter Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-ratelimiter</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Security 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-security-mask</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-security-xss</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Storage Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-storage</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Trace Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-trace</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Validation Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-validation</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Web Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-web</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Core Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-core</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Cache SpringCache Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-cache-springcache</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Encrypt 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-encrypt-api</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-encrypt-core</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Excel 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-excel-core</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-excel-poi</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Extension 相关核心 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-extension-crud-core</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-extension-datapermission-core</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-extension-tenant-core</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 License 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-license-generator</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-license-verifier</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Log 相关 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-log-aop</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-log-core</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Messaging MQTT Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-messaging-mqtt</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- 显式声明使用本地的 Security 敏感词 Starter -->
+            <dependency>
+                <groupId>top.continew.starter</groupId>
+                <artifactId>continew-starter-security-sensitivewords</artifactId>
+                <version>2.16.0-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -131,6 +414,7 @@
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
                 <executions>
                     <execution>
                         <phase>compile</phase>
@@ -155,6 +439,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten.version}</version>
                 <configuration>
                     <updatePomFile>true</updatePomFile>
                     <flattenMode>resolveCiFriendliesOnly</flattenMode>

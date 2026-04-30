@@ -101,11 +101,6 @@
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-sign</artifactId>
         </dependency>
-        <!-- NextDoc4j - SaToken 权限展示插件 -->
-        <dependency>
-            <groupId>top.nextdoc4j</groupId>
-            <artifactId>nextdoc4j-plugin-security-satoken</artifactId>
-        </dependency>
 
         <!-- ContiNew Starter 认证模块 - JustAuth -->
         <dependency>
@@ -188,6 +183,12 @@
         <dependency>
             <groupId>top.continew.starter</groupId>
             <artifactId>continew-starter-extension-tenant-mp</artifactId>
+        </dependency>
+
+        <!-- 显式引入本地的 API 文档 Starter -->
+        <dependency>
+            <groupId>top.continew.starter</groupId>
+            <artifactId>continew-starter-api-doc</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -1,12 +1,12 @@
 /*
  * Copyright (c) 2022-present Charles7c Authors. All Rights Reserved.
- * <p>
- * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE 3.0;
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
- * http://www.gnu.org/licenses/lgpl.html
- * <p>
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +28,6 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.continew.starter.apidoc.processor.BaseEnumProcessor;
@@ -42,7 +41,6 @@ import top.nextdoc4j.enums.resolver.EnumMetadataResolver;
  * @author Charles7c
  * @since 1.0.0
  */
-@EnableWebMvc
 @AutoConfiguration(before = SpringDocConfiguration.class)
 @PropertySource(value = "classpath:default-api-doc.yml", factory = GeneralPropertySourceFactory.class)
 public class SpringDocAutoConfiguration implements WebMvcConfigurer {
@@ -51,7 +49,14 @@ public class SpringDocAutoConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/");
+        // 注意：不要完全覆盖默认的资源处理器，只添加额外的映射
+        // Spring Boot 会自动处理 classpath:/META-INF/resources/, classpath:/resources/, 
+        // classpath:/static/, classpath:/public/ 下的静态资源
+
+        // 如果需要自定义 favicon 位置，可以单独配置
+        // registry.addResourceHandler("/favicon.ico")
+        //     .addResourceLocations("classpath:/")
+        //     .setCacheControl(org.springframework.http.CacheControl.maxAge(java.time.Duration.ofDays(365)));
     }
 
     /**

@@ -45,6 +45,11 @@ spring:
     allow-bean-definition-overriding: true
     # 允许循环依赖
     allow-circular-references: true
+  ## Web 资源配置
+  web:
+    resources:
+      # 静态资源路径（默认包含 classpath:/META-INF/resources/, classpath:/resources/, classpath:/static/, classpath:/public/）
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
   ## Jackson 配置
   jackson:
     # 大数值序列化模式
