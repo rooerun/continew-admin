@@ -28,8 +28,6 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.continew.starter.apidoc.processor.BaseEnumProcessor;
 import top.continew.starter.core.autoconfigure.application.ApplicationProperties;
 import top.continew.starter.core.util.GeneralPropertySourceFactory;
@@ -43,21 +41,9 @@ import top.nextdoc4j.enums.resolver.EnumMetadataResolver;
  */
 @AutoConfiguration(before = SpringDocConfiguration.class)
 @PropertySource(value = "classpath:default-api-doc.yml", factory = GeneralPropertySourceFactory.class)
-public class SpringDocAutoConfiguration implements WebMvcConfigurer {
+public class SpringDocAutoConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(SpringDocAutoConfiguration.class);
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 注意：不要完全覆盖默认的资源处理器，只添加额外的映射
-        // Spring Boot 会自动处理 classpath:/META-INF/resources/, classpath:/resources/, 
-        // classpath:/static/, classpath:/public/ 下的静态资源
-
-        // 如果需要自定义 favicon 位置，可以单独配置
-        // registry.addResourceHandler("/favicon.ico")
-        //     .addResourceLocations("classpath:/")
-        //     .setCacheControl(org.springframework.http.CacheControl.maxAge(java.time.Duration.ofDays(365)));
-    }
 
     /**
      * Open API 配置
