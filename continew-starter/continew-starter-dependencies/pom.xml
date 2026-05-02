@@ -17,7 +17,7 @@
         <revision>2.16.0-SNAPSHOT</revision>
 
         <!-- Core Framework Versions -->
-        <spring-boot.version>3.5.13</spring-boot.version>
+        <spring-boot.version>3.5.14</spring-boot.version>
         <spring-cloud.version>2025.0.1</spring-cloud.version>
 
         <!-- Cache and Storage Versions -->
