@@ -36,6 +36,6 @@ public class DefaultController {
     @RequestMapping("/**")
     public R error() {
         return R.fail(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR
-            .value()), "任务模块已禁用，请于对应环境配置文件中配置 snail-job.enabled 为 true 进行启用");
+            .value()), "任务模块已禁用，请于对应环境配置文件中配置 schedule.enabled 为 true 进行启用");
     }
 }

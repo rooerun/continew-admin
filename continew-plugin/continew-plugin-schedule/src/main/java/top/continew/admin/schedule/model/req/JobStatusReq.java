@@ -19,7 +19,6 @@ package top.continew.admin.schedule.model.req;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import top.continew.admin.schedule.enums.JobStatusEnum;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -39,9 +38,9 @@ public class JobStatusReq implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 任务状态
+     * 任务状态（0正常 1暂停）
      */
     @Schema(description = "任务状态", example = "1")
     @NotNull(message = "任务状态无效")
-    private JobStatusEnum jobStatus;
+    private Integer jobStatus;
 }

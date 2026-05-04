@@ -14,33 +14,18 @@
  * limitations under the License.
  */
 
-package top.continew.admin.schedule.model;
+package top.continew.admin.schedule.mapper;
 
-import com.aizuda.snailjob.common.core.model.Result;
-import lombok.Data;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import top.continew.admin.schedule.model.entity.ScheduleJobDO;
 
 /**
- * 任务调度服务端分页响应参数
+ * 定时任务 Mapper
  *
- * @author KAI
  * @author Charles7c
- * @since 2024/6/26 22:27
+ * @since 2025/5/2 10:00
  */
-@Data
-public class JobPageResult<T> extends Result<T> {
-
-    /**
-     * 页码
-     */
-    private long page;
-
-    /**
-     * 每页条数
-     */
-    private long size;
-
-    /**
-     * 总条数
-     */
-    private long total;
+@Mapper
+public interface ScheduleJobMapper extends BaseMapper<ScheduleJobDO> {
 }

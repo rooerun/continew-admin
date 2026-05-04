@@ -32,7 +32,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.continew.starter.core.ContiNewStarterVersion;
@@ -53,7 +52,6 @@ import top.nextdoc4j.core.configuration.NextDoc4jProperties;
 @EnableGlobalResponse
 @EnableFileStorage
 @EnableMethodCache(basePackages = "top.continew.admin")
-@EnableFeignClients
 @RestController
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -87,17 +85,11 @@ public class ContiNewAdminApplication implements ApplicationRunner {
         log.info("{} server started successfully.", applicationProperties.getName());
         log.info("ContiNew Starter: v{} (Spring Boot: v{})", ContiNewStarterVersion.getVersion(), SpringBootVersion
             .getVersion());
-        log.info("当前版本: v{} (Profile: {})", applicationProperties.getVersion(), SpringUtil
-            .getProperty("spring.profiles.active"));
         log.info("服务地址: {}", baseUrl);
         NextDoc4jProperties docProperties = SpringUtil.getBean(NextDoc4jProperties.class);
         if (!docProperties.isProduction()) {
             log.info("接口文档: {}/doc.html", baseUrl);
         }
-        log.info("吐槽广场: https://continew.top/docs/admin/issue-hub.html");
-        log.info("常见问题: https://continew.top/docs/admin/faq.html");
-        log.info("更新日志: https://continew.top/docs/admin/changelog/");
-        log.info("ContiNew Admin: 持续迭代优化的，高质量多租户中后台管理系统框架");
         log.info("--------------------------------------------------------");
     }
 }

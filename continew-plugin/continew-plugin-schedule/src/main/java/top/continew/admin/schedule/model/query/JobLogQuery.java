@@ -17,10 +17,7 @@
 package top.continew.admin.schedule.model.query;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
-import top.continew.admin.schedule.enums.JobExecuteStatusEnum;
-import top.continew.starter.validation.constraints.EnumValue;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
@@ -57,16 +54,20 @@ public class JobLogQuery extends JobPageQuery {
     private String jobName;
 
     /**
-     * 任务批次状态
+     * 执行状态（0正常 1失败）
      */
-    @Schema(description = "任务批次状态", example = "1")
-    @EnumValue(value = JobExecuteStatusEnum.class, message = "任务批次状态无效")
-    private Integer taskBatchStatus;
+    @Schema(description = "执行状态", example = "0")
+    private Integer status;
 
     /**
-     * 创建时间
+     * 开始时间
      */
-    @Schema(description = "创建时间", example = "2023-08-08 00:00:00,2023-08-08 23:59:59")
-    @Size(max = 2, message = "创建时间必须是一个范围")
-    private LocalDateTime[] datetimeRange;
+    @Schema(description = "开始时间", example = "2023-08-08 00:00:00")
+    private LocalDateTime startTime;
+
+    /**
+     * 结束时间
+     */
+    @Schema(description = "结束时间", example = "2023-08-08 23:59:59")
+    private LocalDateTime endTime;
 }

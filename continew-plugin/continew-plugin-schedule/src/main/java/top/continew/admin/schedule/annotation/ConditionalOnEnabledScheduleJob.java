@@ -22,14 +22,14 @@ import top.continew.starter.core.constant.PropertiesConstants;
 import java.lang.annotation.*;
 
 /**
- * 是否启用 Snail Job 判断注解
+ * 是否启用定时任务判断注解
  *
  * @author Charles7c
- * @since 2025/5/18 12:03
+ * @since 2025/5/2 10:00
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Documented
-@ConditionalOnProperty(prefix = "snail-job", name = PropertiesConstants.ENABLED, havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "schedule", name = PropertiesConstants.ENABLED, havingValue = "true", matchIfMissing = true)
 public @interface ConditionalOnEnabledScheduleJob {
 }

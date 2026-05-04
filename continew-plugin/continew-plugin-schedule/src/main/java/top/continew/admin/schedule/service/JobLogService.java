@@ -16,6 +16,7 @@
 
 package top.continew.admin.schedule.service;
 
+import top.continew.admin.schedule.model.entity.ScheduleJobLogDO;
 import top.continew.admin.schedule.model.query.JobLogQuery;
 import top.continew.admin.schedule.model.resp.JobLogResp;
 import top.continew.starter.extension.crud.model.resp.PageResp;
@@ -52,4 +53,11 @@ public interface JobLogService {
      * @return 重试结果
      */
     boolean retry(Long id);
+
+    /**
+     * 保存任务日志
+     *
+     * @param jobLog 任务日志
+     */
+    void save(ScheduleJobLogDO jobLog);
 }

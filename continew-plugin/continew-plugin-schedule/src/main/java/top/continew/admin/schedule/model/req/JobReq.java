@@ -18,7 +18,6 @@ package top.continew.admin.schedule.model.req;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import top.continew.admin.schedule.enums.*;
@@ -43,7 +42,7 @@ public class JobReq implements Serializable {
     /**
      * 任务组
      */
-    @Schema(description = "任务组", example = "continew-admin")
+    @Schema(description = "任务组", example = "DEFAULT")
     @NotBlank(message = "任务组不能为空")
     private String groupName;
 
@@ -56,104 +55,43 @@ public class JobReq implements Serializable {
     private String jobName;
 
     /**
-     * 描述
+     * 调用目标字符串（类名.方法名）
      */
-    @Schema(description = "描述", example = "定时任务1的描述")
-    private String description;
+    @Schema(description = "调用目标字符串", example = "testTask.test")
+    @NotBlank(message = "调用目标不能为空")
+    private String invokeTarget;
 
     /**
-     * 触发类型
+     * cron执行表达式
      */
-    @Schema(description = "触发类型", example = "2")
-    @NotNull(message = "触发类型无效")
-    private JobTriggerTypeEnum triggerType;
+    @Schema(description = "cron执行表达式", example = "0 0/5 * * * ?")
+    @NotBlank(message = "cron表达式不能为空")
+    private String cronExpression;
 
     /**
-     * 间隔时长
+     * 计划执行错误策略（1立即执行 2执行一次 3放弃执行）
      */
-    @Schema(description = "间隔时长", example = "60")
-    @NotBlank(message = "间隔时长不能为空")
-    private String triggerInterval;
+    @Schema(description = "计划执行错误策略", example = "3", defaultValue = "3")
+    private Integer misfirePolicy = 3;
 
     /**
-     * 执行器类型
+     * 是否并发执行（0允许 1禁止）
      */
-    @Schema(description = "执行器类型", example = "1", defaultValue = "1")
-    private Integer executorType = 1;
+    @Schema(description = "是否并发执行", example = "1", defaultValue = "1")
+    private Integer concurrent = 1;
 
     /**
-     * 任务类型
-     */
-    @Schema(description = "任务类型", example = "1")
-    @NotNull(message = "任务类型无效")
-    private JobTaskTypeEnum taskType;
-
-    /**
-     * 执行器名称
-     */
-    @Schema(description = "执行器名称", example = "test")
-    @NotBlank(message = "执行器名称不能为空")
-    private String executorInfo;
-
-    /**
-     * 任务参数
-     */
-    @Schema(description = "任务参数", example = "")
-    private String argsStr;
-
-    /**
-     * 参数类型
-     */
-    @Schema(description = "参数类型", example = "1")
-    private Integer argsType;
-
-    /**
-     * 路由策略
-     */
-    @Schema(description = "路由策略", example = "4")
-    @NotNull(message = "路由策略无效")
-    private JobRouteStrategyEnum routeKey;
-
-    /**
-     * 阻塞策略
-     */
-    @Schema(description = "阻塞策略", example = "1")
-    @NotNull(message = "阻塞策略无效")
-    private JobBlockStrategyEnum blockStrategy;
-
-    /**
-     * 超时时间（单位：秒）
-     */
-    @Schema(description = "超时时间（单位：秒）", example = "60")
-    @NotNull(message = "超时时间不能为空")
-    private Integer executorTimeout;
-
-    /**
-     * 最大重试次数
-     */
-    @Schema(description = "最大重试次数", example = "3")
-    @NotNull(message = "最大重试次数不能为空")
-    private Integer maxRetryTimes;
-
-    /**
-     * 重试间隔（单位：秒）
-     */
-    @Schema(description = "重试间隔（单位：秒）", example = "1")
-    @NotNull(message = "重试间隔不能为空")
-    private Integer retryInterval;
-
-    /**
-     * 并行数
-     */
-    @Schema(description = "并行数", example = "1")
-    @NotNull(message = "并行数不能为空")
-    private Integer parallelNum;
-
-    /**
-     * 任务状态
+     * 任务状态（0正常 1暂停）
      */
     @Schema(description = "任务状态", example = "0", defaultValue = "0")
-    private JobStatusEnum jobStatus = JobStatusEnum.DISABLED;
+    private Integer jobStatus = 0;
+
+    /**
+     * 备注
+     */
+    @Schema(description = "备注", example = "备注信息")
+    @Length(max = 500, message = "备注不能超过 {max} 个字符")
+    private String remark;
 
     /**
      * ID

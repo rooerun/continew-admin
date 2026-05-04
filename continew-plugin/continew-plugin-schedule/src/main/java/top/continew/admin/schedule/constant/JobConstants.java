@@ -19,20 +19,20 @@ package top.continew.admin.schedule.constant;
 /**
  * 任务调度常量
  *
- * @author KAI
- * @since 2024/6/26 9:19
+ * @author Charles7c
+ * @since 2025/5/2 10:00
  */
 public class JobConstants {
 
     /**
-     * 请求头：命名空间 ID
+     * Quartz 任务前缀
      */
-    public static final String NAMESPACE_ID_HEADER = "SNAIL-JOB-NAMESPACE-ID";
+    public static final String JOB_PREFIX = "TASK_";
 
     /**
-     * 请求头：认证令牌
+     * Quartz 触发器前缀
      */
-    public static final String AUTH_TOKEN_HEADER = "Snail-Job-Auth";
+    public static final String TRIGGER_PREFIX = "TRIGGER_";
 
     private JobConstants() {
     }

@@ -18,21 +18,16 @@ package top.continew.admin.job;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import com.aizuda.snailjob.client.job.core.annotation.JobExecutor;
-import com.aizuda.snailjob.common.log.SnailJobLog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import top.continew.admin.schedule.annotation.ConditionalOnEnabledScheduleJob;
 import top.continew.admin.system.enums.NoticeMethodEnum;
 import top.continew.admin.system.enums.NoticeStatusEnum;
 import top.continew.admin.system.mapper.NoticeMapper;
 import top.continew.admin.system.model.entity.NoticeDO;
 import top.continew.admin.system.service.NoticeService;
-import top.continew.starter.core.constant.PropertiesConstants;
 import top.continew.starter.core.util.CollUtils;
 import top.continew.starter.extension.tenant.annotation.TenantIgnore;
 
@@ -51,43 +46,21 @@ import java.util.List;
 public class NoticePublishJob {
 
     /**
-     * 定时发布公告（未启用 Snail Job 则使用它）
+     * 定时发布公告
      */
-    @Component
-    @ConditionalOnProperty(prefix = "snail-job", name = PropertiesConstants.ENABLED, havingValue = "false")
-    public static class Scheduler {
-
-        @TenantIgnore
-        @Scheduled(cron = "0 * * * * ?")
-        @Transactional(rollbackFor = Exception.class)
-        public void publishNoticeWithSchedule() {
-            log.info("定时任务 [公告发布] 开始执行。");
-            publishNotice();
-            log.info("定时任务 [公告发布] 执行结束。");
-        }
+    @TenantIgnore
+    @Scheduled(cron = "0 * * * * ?")
+    @Transactional(rollbackFor = Exception.class)
+    public void publishNotice() {
+        log.info("定时任务 [公告发布] 开始执行。");
+        publishNoticeInternal();
+        log.info("定时任务 [公告发布] 执行结束。");
     }
 
     /**
-     * 定时发布公告（启用 Snail Job 时）
+     * 发布公告内部方法
      */
-    @Component
-    @ConditionalOnEnabledScheduleJob
-    public static class ScheduleJob {
-
-        @TenantIgnore
-        @JobExecutor(name = "NoticePublishJob")
-        @Transactional(rollbackFor = Exception.class)
-        public void publishNoticeWithScheduleJob() {
-            SnailJobLog.REMOTE.info("定时任务 [公告发布] 开始执行。");
-            publishNotice();
-            SnailJobLog.REMOTE.info("定时任务 [公告发布] 执行结束。");
-        }
-    }
-
-    /**
-     * 发布公告
-     */
-    private static void publishNotice() {
+    private static void publishNoticeInternal() {
         NoticeMapper noticeMapper = SpringUtil.getBean(NoticeMapper.class);
         // 查询待发布公告
         List<NoticeDO> list = noticeMapper.lambdaQuery()

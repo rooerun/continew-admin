@@ -21,7 +21,9 @@
     <!-- 文件输出格式 -->
     <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{50} - %msg%n"/>
     <!-- 单个日志文件大小上限 -->
-    <property name="FILE_MAX_SIZE" value="20MB"/>
+    <property name="FILE_MAX_SIZE" value="100MB"/>
+    <!-- 日志保留天数 -->
+    <property name="FILE_MAX_HISTORY" value="7"/>
 
     <!-- 输出日志到控制台 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">

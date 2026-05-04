@@ -16,14 +16,20 @@
 
 package top.continew.admin.schedule.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import top.continew.admin.schedule.api.JobBatchApi;
-import top.continew.admin.schedule.api.JobClient;
+import top.continew.admin.schedule.mapper.ScheduleJobLogMapper;
+import top.continew.admin.schedule.model.entity.ScheduleJobLogDO;
 import top.continew.admin.schedule.model.query.JobLogQuery;
 import top.continew.admin.schedule.model.resp.JobLogResp;
 import top.continew.admin.schedule.service.JobLogService;
 import top.continew.starter.extension.crud.model.resp.PageResp;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 任务日志业务实现
@@ -36,21 +42,67 @@ import top.continew.starter.extension.crud.model.resp.PageResp;
 @RequiredArgsConstructor
 public class JobLogServiceImpl implements JobLogService {
 
-    private final JobClient jobClient;
-    private final JobBatchApi jobBatchApi;
+    private final ScheduleJobLogMapper jobLogMapper;
 
     @Override
     public PageResp<JobLogResp> page(JobLogQuery query) {
-        return jobClient.requestPage(() -> jobBatchApi.page(query));
+        LambdaQueryWrapper<ScheduleJobLogDO> wrapper = new LambdaQueryWrapper<>();
+        if (query.getJobId() != null) {
+            wrapper.eq(ScheduleJobLogDO::getJobId, query.getJobId());
+        }
+        if (StrUtil.isNotBlank(query.getJobName())) {
+            wrapper.like(ScheduleJobLogDO::getJobName, query.getJobName());
+        }
+        if (query.getStatus() != null) {
+            wrapper.eq(ScheduleJobLogDO::getStatus, query.getStatus());
+        }
+        if (query.getStartTime() != null && query.getEndTime() != null) {
+            wrapper.between(ScheduleJobLogDO::getStartTime, query.getStartTime(), query.getEndTime());
+        }
+        wrapper.orderByDesc(ScheduleJobLogDO::getCreateTime);
+
+        Page<ScheduleJobLogDO> page = jobLogMapper.selectPage(new Page<>(query.getPage(), query.getSize()), wrapper);
+        List<JobLogResp> list = page.getRecords().stream().map(this::convertToResp).collect(Collectors.toList());
+
+        PageResp<JobLogResp> result = new PageResp<>();
+        result.setList(list);
+        result.setTotal(page.getTotal());
+        return result;
     }
 
     @Override
     public boolean stop(Long id) {
-        return Boolean.TRUE.equals(jobClient.request(() -> jobBatchApi.stop(id)));
+        // Quartz 中不支持单独停止某个执行实例，这里可以记录日志或实现其他逻辑
+        throw new UnsupportedOperationException("Quartz 不支持此操作");
     }
 
     @Override
     public boolean retry(Long id) {
-        return Boolean.TRUE.equals(jobClient.request(() -> jobBatchApi.retry(id)));
+        // Quartz 中不支持直接重试，需要重新触发任务
+        throw new UnsupportedOperationException("Quartz 不支持此操作");
+    }
+
+    /**
+     * 保存任务日志
+     */
+    public void save(ScheduleJobLogDO jobLog) {
+        jobLogMapper.insert(jobLog);
+    }
+
+    /**
+     * 转换为响应对象
+     */
+    private JobLogResp convertToResp(ScheduleJobLogDO log) {
+        JobLogResp resp = new JobLogResp();
+        resp.setId(log.getId());
+        resp.setJobGroup(log.getJobGroup());
+        resp.setInvokeTarget(log.getInvokeTarget());
+        resp.setJobMessage(log.getJobMessage());
+        resp.setStatus(log.getStatus());
+        resp.setExceptionInfo(log.getExceptionInfo());
+        resp.setStartTime(log.getStartTime());
+        resp.setEndTime(log.getEndTime());
+        resp.setCreateTime(log.getCreateTime());
+        return resp;
     }
 }

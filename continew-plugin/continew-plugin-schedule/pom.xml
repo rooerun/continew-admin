@@ -14,24 +14,16 @@
     <description>任务调度插件</description>
 
     <dependencies>
-        <!-- SnailJob（灵活，可靠和快速的分布式任务重试和分布式任务调度平台） -->
+        <!-- Quartz（企业级任务调度框架） -->
         <dependency>
-            <groupId>com.aizuda</groupId>
-            <artifactId>snail-job-client-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.aizuda</groupId>
-            <artifactId>snail-job-client-retry-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.aizuda</groupId>
-            <artifactId>snail-job-client-job-core</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
 
-        <!-- OpenFeign（一种基于 Spring Cloud 的声明式 REST 客户端，它简化了与 HTTP 服务交互的过程） -->
+        <!-- MyBatis Plus（用于持久层操作） -->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
         </dependency>
     </dependencies>
 </project>

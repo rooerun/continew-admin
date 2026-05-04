@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-package top.continew.admin.schedule.exception;
+package top.continew.admin.schedule.mapper;
 
-import top.continew.starter.core.exception.BaseException;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import top.continew.admin.schedule.model.entity.ScheduleJobLogDO;
 
 /**
- * 调度客户端异常
+ * 定时任务日志 Mapper
  *
  * @author Charles7c
- * @since 2025/5/21 22:05
+ * @since 2025/5/2 10:00
  */
-public class ScheduleClientException extends BaseException {
-
-    public ScheduleClientException(String message) {
-        super(message);
-    }
-
-    public ScheduleClientException(String message, Throwable cause) {
-        super(message, cause);
-    }
+@Mapper
+public interface ScheduleJobLogMapper extends BaseMapper<ScheduleJobLogDO> {
 }

@@ -18,7 +18,6 @@ package top.continew.admin.schedule.model.resp;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import top.continew.admin.schedule.enums.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -47,7 +46,7 @@ public class JobResp implements Serializable {
     /**
      * 任务组
      */
-    @Schema(description = "任务组", example = "continew-admin")
+    @Schema(description = "任务组", example = "DEFAULT")
     private String groupName;
 
     /**
@@ -57,110 +56,50 @@ public class JobResp implements Serializable {
     private String jobName;
 
     /**
-     * 描述
+     * 调用目标字符串（类名.方法名）
      */
-    @Schema(description = "描述", example = "定时任务1的描述")
-    private String description;
+    @Schema(description = "调用目标字符串", example = "testTask.test")
+    private String invokeTarget;
 
     /**
-     * 触发类型
+     * cron执行表达式
      */
-    @Schema(description = "触发类型", example = "2")
-    private JobTriggerTypeEnum triggerType;
+    @Schema(description = "cron执行表达式", example = "0 0/5 * * * ?")
+    private String cronExpression;
 
     /**
-     * 间隔时长
+     * 计划执行错误策略（1立即执行 2执行一次 3放弃执行）
      */
-    @Schema(description = "间隔时长", example = "60")
-    private String triggerInterval;
+    @Schema(description = "计划执行错误策略", example = "3")
+    private Integer misfirePolicy;
 
     /**
-     * 执行器类型
+     * 是否并发执行（0允许 1禁止）
      */
-    @Schema(description = " 执行器类型", example = "1")
-    private Integer executorType;
+    @Schema(description = "是否并发执行", example = "1")
+    private Integer concurrent;
 
     /**
-     * 执行器名称
+     * 任务状态（0正常 1暂停）
      */
-    @Schema(description = "执行器名称", example = "test")
-    private String executorInfo;
+    @Schema(description = "任务状态", example = "0")
+    private Integer jobStatus;
 
     /**
-     * 任务类型
+     * 备注
      */
-    @Schema(description = "任务类型", example = "1")
-    private JobTaskTypeEnum taskType;
-
-    /**
-     * 任务参数
-     */
-    @Schema(description = "任务参数", example = "")
-    private String argsStr;
-
-    /**
-     * 参数类型
-     */
-    @Schema(description = "参数类型", example = "1")
-    private String argsType;
-
-    /**
-     * 路由策略
-     */
-    @Schema(description = "路由策略", example = "1")
-    private JobRouteStrategyEnum routeKey;
-
-    /**
-     * 阻塞策略
-     */
-    @Schema(description = "阻塞策略", example = "1")
-    private JobBlockStrategyEnum blockStrategy;
-
-    /**
-     * 超时时间（单位：秒）
-     */
-    @Schema(description = "超时时间（单位：秒）", example = "60")
-    private Integer executorTimeout;
-
-    /**
-     * 最大重试次数
-     */
-    @Schema(description = "最大重试次数", example = "3")
-    private Integer maxRetryTimes;
-
-    /**
-     * 重试间隔（单位：秒）
-     */
-    @Schema(description = "重试间隔", example = "1")
-    private Integer retryInterval;
-
-    /**
-     * 并行数
-     */
-    @Schema(description = "并行数", example = "1")
-    private Integer parallelNum;
-
-    /**
-     * 任务状态
-     */
-    @Schema(description = "任务状态", example = "1")
-    private JobStatusEnum jobStatus;
-
-    /**
-     * 下次触发时间
-     */
-    @Schema(description = "下次触发时间", example = "2023-08-08 08:09:00", type = "string")
-    private LocalDateTime nextTriggerAt;
+    @Schema(description = "备注", example = "备注信息")
+    private String remark;
 
     /**
      * 创建时间
      */
-    @Schema(description = "创建时间", example = "2023-08-08 08:08:00", type = "string")
-    private LocalDateTime createDt;
+    @Schema(description = "创建时间", example = "2023-08-08 08:08:00")
+    private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
-    @Schema(description = "修改时间", example = "2023-08-08 08:08:00", type = "string")
-    private LocalDateTime updateDt;
+    @Schema(description = "修改时间", example = "2023-08-08 08:08:00")
+    private LocalDateTime updateTime;
 }

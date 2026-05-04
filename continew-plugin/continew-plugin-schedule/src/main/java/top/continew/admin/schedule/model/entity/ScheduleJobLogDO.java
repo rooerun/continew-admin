@@ -14,80 +14,70 @@
  * limitations under the License.
  */
 
-package top.continew.admin.schedule.model.resp;
+package top.continew.admin.schedule.model.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import top.continew.admin.common.base.model.entity.BaseDO;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 任务日志响应参数
+ * 定时任务日志实体
  *
- * @author KAI
  * @author Charles7c
- * @since 2024/6/27 22:50
+ * @since 2025/5/2 10:00
  */
 @Data
-@Schema(description = "任务日志响应参数")
-public class JobLogResp implements Serializable {
+@TableName("schedule_job_log")
+public class ScheduleJobLogDO extends BaseDO {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
+     * 任务ID
      */
-    @Schema(description = "ID", example = "1")
-    private Long id;
+    private Long jobId;
+
+    /**
+     * 任务名称
+     */
+    private String jobName;
 
     /**
      * 任务组名
      */
-    @Schema(description = "任务组名", example = "DEFAULT")
     private String jobGroup;
 
     /**
      * 调用目标字符串
      */
-    @Schema(description = "调用目标字符串", example = "testTask.test")
     private String invokeTarget;
 
     /**
      * 日志信息
      */
-    @Schema(description = "日志信息", example = "执行成功")
     private String jobMessage;
 
     /**
      * 执行状态（0正常 1失败）
      */
-    @Schema(description = "执行状态", example = "0")
     private Integer status;
 
     /**
      * 异常信息
      */
-    @Schema(description = "异常信息", example = "异常信息")
     private String exceptionInfo;
 
     /**
      * 开始时间
      */
-    @Schema(description = "开始时间", example = "2023-08-08 08:08:08")
     private LocalDateTime startTime;
 
     /**
      * 结束时间
      */
-    @Schema(description = "结束时间", example = "2023-08-08 08:08:09")
     private LocalDateTime endTime;
-
-    /**
-     * 创建时间
-     */
-    @Schema(description = "创建时间", example = "2023-08-08 08:08:08")
-    private LocalDateTime createTime;
 }

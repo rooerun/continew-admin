@@ -248,35 +248,7 @@ sa-token.extension:
     # 本地存储资源
     - /file/**
 
---- ### Snail Job 配置
-snail-job:
-  enabled: false
-  ## 服务端配置（任务调度中心）
-  server:
-    # 服务端地址
-    host: ${SCHEDULE_HOST:127.0.0.1}
-    # 服务端通讯端口
-    port: ${SCHEDULE_PORT:17888}
-    # API 配置
-    api:
-      # URL
-      url: http://127.0.0.1:8001/snail-job
-      # 用户名
-      username: ${SCHEDULE_USERNAME:admin}
-      # 密码
-      password: ${SCHEDULE_PASSWORD:admin}
-  ## OpenAPI 配置
-  openapi:
-    # 服务端 Web 端口（默认：8080，如果你部署的服务端改动了端口，这里也需要对应改动）
-    # continew-extension/continew-extension-schedule-server
-    port: 8001
-  # 客户端地址（默认：自动推断。必须确保服务端可以访问到，在服务端无法调度客户端时需要手动配置）
-  #host: 127.0.0.1
-  # 客户端端口（默认：17889）
-  port: 17889
-  # 命名空间
-  namespace: ${SCHEDULE_NAMESPACE:764d604ec6fc45f68cd92514c40e9e1a}
-  # 接入组名
-  group: ${SCHEDULE_GROUP:continew-admin}
-  # 接入组 token
-  token: ${SCHEDULE_TOKEN:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj}
+--- ### 定时任务配置
+schedule:
+  # 是否启用定时任务（默认：true）
+  enabled: true
