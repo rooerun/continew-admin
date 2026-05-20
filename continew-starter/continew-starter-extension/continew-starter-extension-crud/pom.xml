@@ -18,6 +18,5 @@
     <modules>
         <module>continew-starter-extension-crud-core</module>
         <module>continew-starter-extension-crud-mp</module>
-        <module>continew-starter-extension-crud-mf</module>
     </modules>
 </project>

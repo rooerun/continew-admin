@@ -152,11 +152,6 @@
             </dependency>
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-data-mf</artifactId>
-                <version>${continew-starter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>top.continew.starter</groupId>
                 <artifactId>continew-starter-data-core</artifactId>
                 <version>${continew-starter.version}</version>
             </dependency>

@@ -91,12 +91,6 @@
                 <artifactId>continew-starter-data-mp</artifactId>
                 <version>${revision}</version>
             </dependency>
-            <!-- 数据访问模块 - MyBatis Flex -->
-            <dependency>
-                <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-data-mf</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <!-- 数据访问模块 - 核心模块 -->
             <dependency>
                 <groupId>top.continew.starter</groupId>
@@ -272,12 +266,6 @@
             <dependency>
                 <groupId>top.continew.starter</groupId>
                 <artifactId>continew-starter-extension-crud-mp</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <!-- 扩展模块 - CRUD - MyBatis Flex ORM 模块 -->
-            <dependency>
-                <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-extension-crud-mf</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!-- 扩展模块 - CRUD - 核心模块 -->

@@ -110,15 +110,6 @@
                 </exclusions>
             </dependency>
 
-            <!-- Spring Cloud（由 Pivotal 团队提供的微服务解决方案） -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <!-- Redisson（不仅仅是一个 Redis Java 客户端） -->
             <dependency>
                 <groupId>org.redisson</groupId>
