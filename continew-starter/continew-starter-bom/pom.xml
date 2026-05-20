@@ -217,22 +217,10 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- Excel 文件处理模块 - FastExcel -->
+            <!-- Excel 文件处理模块 -->
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-excel-fastexcel</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <!-- Excel 文件处理模块 - POI -->
-            <dependency>
-                <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-excel-poi</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <!-- Excel 文件处理模块 - 核心模块 -->
-            <dependency>
-                <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-excel-core</artifactId>
+                <artifactId>continew-starter-excel</artifactId>
                 <version>${revision}</version>
             </dependency>
 

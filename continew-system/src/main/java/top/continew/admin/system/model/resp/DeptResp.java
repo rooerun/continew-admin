@@ -23,7 +23,7 @@ import lombok.Data;
 import top.continew.admin.common.base.model.resp.BaseDetailResp;
 import top.continew.admin.common.enums.DisEnableStatusEnum;
 import top.continew.starter.extension.crud.annotation.TreeField;
-import top.continew.starter.excel.converter.ExcelBaseEnumConverter;
+import top.continew.excel.converter.ExcelBaseEnumConverter;
 
 import java.io.Serial;
 

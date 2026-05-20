@@ -19,7 +19,10 @@ package top.continew.admin.system.service.impl;
 import cn.crane4j.annotation.AutoOperate;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -36,14 +39,17 @@ import top.continew.admin.system.model.resp.log.LogResp;
 import top.continew.admin.system.model.resp.log.LoginLogExportResp;
 import top.continew.admin.system.model.resp.log.OperationLogExportResp;
 import top.continew.admin.system.service.LogService;
+import top.continew.starter.core.exception.BaseException;
 import top.continew.starter.core.util.validation.CheckUtils;
 import top.continew.starter.data.util.QueryWrapperHelper;
 import top.continew.starter.extension.crud.model.query.PageQuery;
 import top.continew.starter.extension.crud.model.query.SortQuery;
 import top.continew.starter.extension.crud.model.resp.PageResp;
-import top.continew.starter.excel.util.ExcelUtils;
+import top.continew.excel.util.ExcelUtils;
 
+import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -79,14 +85,39 @@ public class LogServiceImpl implements LogService {
     @Override
     public void exportLoginLog(LogQuery query, SortQuery sortQuery, HttpServletResponse response) {
         List<LoginLogExportResp> list = BeanUtil.copyToList(this.list(query, sortQuery), LoginLogExportResp.class);
-        ExcelUtils.export(list, "导出登录日志数据", LoginLogExportResp.class, response);
+
+        try{
+            try(OutputStream outputStream = response.getOutputStream()){
+                String exportFileName = URLUtil.encode("%s_%s.xlsx".formatted("导出登录日志数据", DateUtil
+                        .format(new Date(), DatePattern.PURE_DATETIME_PATTERN)));
+                response.setHeader("Content-disposition", "attachment;filename=" + exportFileName);
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+                ExcelUtils.export(list, LoginLogExportResp.class, outputStream);
+            }
+        }catch (Exception e){
+            response.reset();
+            throw new BaseException("导出登录日志数据失败", e);
+        }
+
     }
 
     @Override
     public void exportOperationLog(LogQuery query, SortQuery sortQuery, HttpServletResponse response) {
         List<OperationLogExportResp> list = BeanUtil.copyToList(this
             .list(query, sortQuery), OperationLogExportResp.class);
-        ExcelUtils.export(list, "导出操作日志数据", OperationLogExportResp.class, response);
+
+        try{
+            try(OutputStream outputStream = response.getOutputStream()){
+                String exportFileName = URLUtil.encode("%s_%s.xlsx".formatted("导出操作日志数据", DateUtil
+                        .format(new Date(), DatePattern.PURE_DATETIME_PATTERN)));
+                response.setHeader("Content-disposition", "attachment;filename=" + exportFileName);
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+                ExcelUtils.export(list, OperationLogExportResp.class, outputStream);
+            }
+        }catch (Exception e){
+            response.reset();
+            throw new BaseException("导出操作日志数据失败", e);
+        }
     }
 
     /**

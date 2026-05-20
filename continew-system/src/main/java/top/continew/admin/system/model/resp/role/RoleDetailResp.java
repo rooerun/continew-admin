@@ -26,7 +26,7 @@ import lombok.Data;
 import top.continew.admin.common.base.model.resp.BaseDetailResp;
 import top.continew.admin.common.enums.DataScopeEnum;
 import top.continew.admin.system.service.RoleDeptService;
-import top.continew.starter.excel.converter.ExcelBaseEnumConverter;
+import top.continew.excel.converter.ExcelBaseEnumConverter;
 
 import java.io.Serial;
 import java.util.List;

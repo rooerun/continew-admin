@@ -37,7 +37,7 @@
         <!-- Excel 文件处理模块 - FastExcel -->
         <dependency>
             <groupId>top.continew.starter</groupId>
-            <artifactId>continew-starter-excel-fastexcel</artifactId>
+            <artifactId>continew-starter-excel</artifactId>
         </dependency>
     </dependencies>
 </project>

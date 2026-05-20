@@ -20,12 +20,15 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -33,7 +36,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
+import top.continew.excel.util.ExcelUtils;
 import top.continew.starter.core.constant.StringConstants;
+import top.continew.starter.core.exception.BaseException;
 import top.continew.starter.core.util.ClassUtils;
 import top.continew.starter.core.util.ReflectUtils;
 import top.continew.starter.core.util.TreeUtils;
@@ -42,7 +47,6 @@ import top.continew.starter.core.util.validation.ValidationUtils;
 import top.continew.starter.data.mapper.BaseMapper;
 import top.continew.starter.data.service.impl.ServiceImpl;
 import top.continew.starter.data.util.QueryWrapperHelper;
-import top.continew.starter.excel.util.ExcelUtils;
 import top.continew.starter.extension.crud.annotation.DictModel;
 import top.continew.starter.extension.crud.annotation.TreeField;
 import top.continew.starter.extension.crud.autoconfigure.CrudProperties;
@@ -53,6 +57,7 @@ import top.continew.starter.extension.crud.model.query.SortQuery;
 import top.continew.starter.extension.crud.model.resp.LabelValueResp;
 import top.continew.starter.extension.crud.model.resp.PageResp;
 
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Function;
@@ -123,9 +128,9 @@ public class CrudServiceImpl<M extends BaseMapper<T>, T extends BaseIdDO, L, D, 
                                                                  tree) -> buildTreeField(isSimple, node, tree, treeField));
         } else {
             Function<L, Long> getId = ReflectUtils.createMethodReference(listClass, CharSequenceUtil.genGetter(treeField
-                .value()));
+                    .value()));
             Function<L, Long> getParentId = ReflectUtils.createMethodReference(listClass, CharSequenceUtil
-                .genGetter(treeField.parentIdKey()));
+                    .genGetter(treeField.parentIdKey()));
             // 构建多根节点树
             return TreeUtils.buildMultiRoot(list, getId, getParentId, treeNodeConfig, (node,
                                                                                        tree) -> buildTreeField(isSimple, node, tree, treeField));
@@ -172,7 +177,19 @@ public class CrudServiceImpl<M extends BaseMapper<T>, T extends BaseIdDO, L, D, 
     public void export(Q query, SortQuery sortQuery, HttpServletResponse response) {
         List<D> list = this.list(query, sortQuery, this.getDetailClass());
         list.forEach(this::fill);
-        ExcelUtils.export(list, "导出数据", this.getDetailClass(), response);
+        try {
+            try(OutputStream outputStream = response.getOutputStream()){
+                String exportFileName = URLUtil.encode("%s_%s.xlsx".formatted("导出数据", DateUtil
+                        .format(new Date(), DatePattern.PURE_DATETIME_PATTERN)));
+                response.setHeader("Content-disposition", "attachment;filename=" + exportFileName);
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+                ExcelUtils.export(list, this.getDetailClass(), outputStream);
+            }
+        } catch (Exception e) {
+            response.reset();
+            throw new BaseException("导出数据失败", e);
+        }
+
     }
 
     @Override
@@ -183,21 +200,21 @@ public class CrudServiceImpl<M extends BaseMapper<T>, T extends BaseIdDO, L, D, 
         // 解析映射
         List<LabelValueResp> respList = new ArrayList<>(list.size());
         String labelKey = dictModel.labelKey().contains(StringConstants.DOT)
-            ? CharSequenceUtil.subAfter(dictModel.labelKey(), StringConstants.DOT, true)
-            : dictModel.labelKey();
+                ? CharSequenceUtil.subAfter(dictModel.labelKey(), StringConstants.DOT, true)
+                : dictModel.labelKey();
         String valueKey = dictModel.valueKey().contains(StringConstants.DOT)
-            ? CharSequenceUtil.subAfter(dictModel.valueKey(), StringConstants.DOT, true)
-            : dictModel.valueKey();
+                ? CharSequenceUtil.subAfter(dictModel.valueKey(), StringConstants.DOT, true)
+                : dictModel.valueKey();
         List<String> extraFieldNames = Arrays.stream(dictModel.extraKeys())
-            .map(extraKey -> extraKey.contains(StringConstants.DOT)
-                ? CharSequenceUtil.subAfter(extraKey, StringConstants.DOT, true)
-                : extraKey)
-            .map(CharSequenceUtil::toCamelCase)
-            .toList();
+                .map(extraKey -> extraKey.contains(StringConstants.DOT)
+                        ? CharSequenceUtil.subAfter(extraKey, StringConstants.DOT, true)
+                        : extraKey)
+                .map(CharSequenceUtil::toCamelCase)
+                .toList();
         for (L entity : list) {
             LabelValueResp<Object> labelValueResp = new LabelValueResp<>();
             labelValueResp.setLabel(Convert.toStr(ReflectUtil.getFieldValue(entity, CharSequenceUtil
-                .toCamelCase(labelKey))));
+                    .toCamelCase(labelKey))));
             labelValueResp.setValue(ReflectUtil.getFieldValue(entity, CharSequenceUtil.toCamelCase(valueKey)));
             respList.add(labelValueResp);
             if (CollUtil.isEmpty(extraFieldNames)) {
@@ -220,7 +237,7 @@ public class CrudServiceImpl<M extends BaseMapper<T>, T extends BaseIdDO, L, D, 
      */
     public Class<L> getListClass() {
         if (this.listClass == null) {
-            this.listClass = (Class<L>)ClassUtils.getTypeArguments(this.getClass())[2];
+            this.listClass = (Class<L>) ClassUtils.getTypeArguments(this.getClass())[2];
         }
         return this.listClass;
     }
@@ -232,7 +249,7 @@ public class CrudServiceImpl<M extends BaseMapper<T>, T extends BaseIdDO, L, D, 
      */
     public Class<D> getDetailClass() {
         if (this.detailClass == null) {
-            this.detailClass = (Class<D>)ClassUtils.getTypeArguments(this.getClass())[3];
+            this.detailClass = (Class<D>) ClassUtils.getTypeArguments(this.getClass())[3];
         }
         return this.detailClass;
     }
@@ -244,7 +261,7 @@ public class CrudServiceImpl<M extends BaseMapper<T>, T extends BaseIdDO, L, D, 
      */
     public Class<Q> getQueryClass() {
         if (this.queryClass == null) {
-            this.queryClass = (Class<Q>)ClassUtils.getTypeArguments(this.getClass())[4];
+            this.queryClass = (Class<Q>) ClassUtils.getTypeArguments(this.getClass())[4];
         }
         return this.queryClass;
     }
@@ -275,7 +292,7 @@ public class CrudServiceImpl<M extends BaseMapper<T>, T extends BaseIdDO, L, D, 
         this.sort(queryWrapper, sortQuery);
         List<T> entityList = baseMapper.selectList(queryWrapper);
         if (super.getEntityClass() == targetClass) {
-            return (List<E>)entityList;
+            return (List<E>) entityList;
         }
         return BeanUtil.copyToList(entityList, targetClass);
     }
@@ -301,8 +318,8 @@ public class CrudServiceImpl<M extends BaseMapper<T>, T extends BaseIdDO, L, D, 
                 checkProperty = property;
             }
             Optional<Field> optional = super.getEntityFields().stream()
-                .filter(field -> checkProperty.equals(field.getName()))
-                .findFirst();
+                    .filter(field -> checkProperty.equals(field.getName()))
+                    .findFirst();
             ValidationUtils.throwIf(optional.isEmpty(), "无效的排序字段 [{}]", property);
             queryWrapper.orderBy(true, order.isAscending(), CharSequenceUtil.toUnderlineCase(property));
         }
@@ -402,9 +419,9 @@ public class CrudServiceImpl<M extends BaseMapper<T>, T extends BaseIdDO, L, D, 
         if (!isSimple) {
             List<Field> fieldList = ReflectUtils.getNonStaticFields(listClass);
             fieldList.removeIf(f -> CharSequenceUtil.equalsAnyIgnoreCase(f.getName(), treeField.value(), treeField
-                .parentIdKey(), treeField.nameKey(), treeField.weightKey(), treeField.childrenKey()));
+                    .parentIdKey(), treeField.nameKey(), treeField.weightKey(), treeField.childrenKey()));
             fieldList.forEach(f -> tree.putExtra(f.getName(), ReflectUtil.invoke(node, CharSequenceUtil.genGetter(f
-                .getName()))));
+                    .getName()))));
         }
     }
 }

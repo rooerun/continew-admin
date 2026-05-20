@@ -171,7 +171,7 @@
             <!-- 显式声明使用本地的 Excel 相关 Starter -->
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-excel-fastexcel</artifactId>
+                <artifactId>continew-starter-excel</artifactId>
                 <version>${continew-starter.version}</version>
             </dependency>
 
@@ -308,12 +308,7 @@
             <!-- 显式声明使用本地的 Excel 相关 Starter -->
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-excel-core</artifactId>
-                <version>${continew-starter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-excel-poi</artifactId>
+                <artifactId>continew-starter-excel</artifactId>
                 <version>${continew-starter.version}</version>
             </dependency>
 

@@ -25,7 +25,7 @@ import top.continew.admin.common.config.excel.ExcelDictConverter;
 import top.continew.admin.common.base.model.resp.BaseDetailResp;
 import top.continew.admin.system.enums.NoticeScopeEnum;
 import top.continew.admin.system.enums.NoticeStatusEnum;
-import top.continew.starter.excel.converter.ExcelBaseEnumConverter;
+import top.continew.excel.converter.ExcelBaseEnumConverter;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
