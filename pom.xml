@@ -183,7 +183,7 @@
             </dependency>
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-extension-datapermission-mp</artifactId>
+                <artifactId>continew-starter-extension-datapermission</artifactId>
                 <version>${continew-starter.version}</version>
             </dependency>
             <dependency>

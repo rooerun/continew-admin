@@ -170,7 +170,7 @@
         <!-- ContiNew Starter 数据权限模块 - MyBatis Plus -->
         <dependency>
             <groupId>top.continew.starter</groupId>
-            <artifactId>continew-starter-extension-datapermission-mp</artifactId>
+            <artifactId>continew-starter-extension-datapermission</artifactId>
         </dependency>
 
         <!-- ContiNew Starter 扩展模块 - CURD（增删改查） -->
