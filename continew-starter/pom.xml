@@ -52,7 +52,6 @@
         <module>continew-starter-log</module>
         <module>continew-starter-excel</module>
         <module>continew-starter-storage</module>
-        <module>continew-starter-license</module>
         <module>continew-starter-extension</module>
     </modules>
 
