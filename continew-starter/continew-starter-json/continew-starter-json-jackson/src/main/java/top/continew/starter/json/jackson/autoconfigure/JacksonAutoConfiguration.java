@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 
@@ -40,7 +39,6 @@ import top.continew.starter.core.enums.BaseEnum;
 import top.continew.starter.core.util.GeneralPropertySourceFactory;
 import top.continew.starter.json.jackson.serializer.BaseEnumDeserializer;
 import top.continew.starter.json.jackson.serializer.BaseEnumSerializer;
-import top.continew.starter.json.jackson.serializer.BigNumberSerializer;
 import top.continew.starter.json.jackson.serializer.SimpleDeserializersWrapper;
 
 /**
@@ -51,16 +49,10 @@ import top.continew.starter.json.jackson.serializer.SimpleDeserializersWrapper;
  * @since 1.0.0
  */
 @AutoConfiguration
-@EnableConfigurationProperties(JacksonExtensionProperties.class)
 @PropertySource(value = "classpath:default-json-jackson.yml", factory = GeneralPropertySourceFactory.class)
 public class JacksonAutoConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(JacksonAutoConfiguration.class);
-    private final JacksonExtensionProperties properties;
-
-    public JacksonAutoConfiguration(JacksonExtensionProperties properties) {
-        this.properties = properties;
-    }
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
@@ -121,25 +113,19 @@ public class JacksonAutoConfiguration {
 
     /**
      * 大数值序列化及反序列化配置
+     * <p>
+     * 将所有 Long、long、BigInteger 类型统一序列化为 String 类型，避免前端 JavaScript 精度丢失问题
+     * </p>
      *
      * @return SimpleModule /
      * @since 2.12.1
      */
     private SimpleModule bigNumberModule() {
         SimpleModule bigNumberModule = new SimpleModule();
-        switch (properties.getBigNumberSerializeMode()) {
-            case FLEXIBLE -> {
-                bigNumberModule.addSerializer(Long.class, BigNumberSerializer.SERIALIZER_INSTANCE);
-                bigNumberModule.addSerializer(Long.TYPE, BigNumberSerializer.SERIALIZER_INSTANCE);
-                bigNumberModule.addSerializer(BigInteger.class, BigNumberSerializer.SERIALIZER_INSTANCE);
-            }
-            case TO_STRING -> {
-                bigNumberModule.addSerializer(Long.class, ToStringSerializer.instance);
-                bigNumberModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-                bigNumberModule.addSerializer(BigInteger.class, ToStringSerializer.instance);
-            }
-            default -> log.warn("[ContiNew Starter] - Jackson 大数值序列化模式：NO_OPERATE，超过 JS 范围的数值会损失精度");
-        }
+        // 统一使用 ToStringSerializer，将所有大数值转为字符串
+        bigNumberModule.addSerializer(Long.class, ToStringSerializer.instance);
+        bigNumberModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+        bigNumberModule.addSerializer(BigInteger.class, ToStringSerializer.instance);
         return bigNumberModule;
     }
 }

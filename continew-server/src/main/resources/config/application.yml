@@ -27,11 +27,6 @@ spring:
     allow-bean-definition-overriding: true
     # 允许循环依赖
     allow-circular-references: true
-  ## Jackson 配置
-  jackson:
-    # 大数值序列化模式
-    # FLEXIBLE：超过 JS 范围的数值转为 String 类型，否则保持原类型
-    big-number-serialize-mode: FLEXIBLE
 
 --- ## 线程池配置（默认启用扩展配置，如未指定 corePoolSize、maxPoolSize 则根据机器配置自动设置）
 spring.task:
