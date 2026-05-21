@@ -10,21 +10,49 @@
     </parent>
 
     <artifactId>continew-starter-data</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
     <description>ContiNew Starter 数据访问模块</description>
-
-    <modules>
-        <module>continew-starter-data-core</module>
-        <module>continew-starter-data-mp</module>
-    </modules>
 
     <dependencies>
         <!-- 核心模块 -->
         <dependency>
             <groupId>top.continew.starter</groupId>
             <artifactId>continew-starter-core</artifactId>
+        </dependency>
+        <!-- Hutool 数据库模块（在 JDBC 基础上封装的数据库操作工具类，通过包装，使用 ActiveRecord 思想操作数据库） -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-db</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+        </dependency>
+        <!-- MyBatis Plus（MyBatis 的增强工具，在 MyBatis 的基础上只做增强不做改变，简化开发、提高效率） -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+        </dependency>
+        <!-- MyBatis Plus jsqlparser 适配（包含原扩展模块内容） -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
+        </dependency>
+
+        <!-- P6Spy（SQL 性能分析组件） -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+        </dependency>
+
+        <!-- CosId（通用、灵活、高性能的分布式 ID 生成器） -->
+        <dependency>
+            <groupId>me.ahoo.cosid</groupId>
+            <artifactId>cosid-spring-boot-starter</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

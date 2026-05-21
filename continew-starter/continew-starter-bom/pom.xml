@@ -85,16 +85,10 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- 数据访问模块 - MyBatis Plus -->
-            <dependency>
-                <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-data-mp</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <!-- 数据访问模块 - 核心模块 -->
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-data-core</artifactId>
+                <artifactId>continew-starter-data</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -259,7 +253,7 @@
             <!-- 扩展模块 - CRUD - 核心模块 -->
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-extension-crud-core</artifactId>
+                <artifactId>continew-starter-extension-crud</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -270,16 +264,10 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- 扩展模块 - 租户 - MyBatis Plus ORM 模块 -->
-            <dependency>
-                <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-extension-tenant-mp</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <!-- 扩展模块 - 租户 - 核心模块 -->
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-extension-tenant-core</artifactId>
+                <artifactId>continew-starter-extension-tenant</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

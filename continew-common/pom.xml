@@ -176,13 +176,13 @@
         <!-- ContiNew Starter 扩展模块 - CURD（增删改查） -->
         <dependency>
             <groupId>top.continew.starter</groupId>
-            <artifactId>continew-starter-extension-crud-mp</artifactId>
+            <artifactId>continew-starter-extension-crud</artifactId>
         </dependency>
 
         <!-- ContiNew Starter 扩展模块 - 租户 -->
         <dependency>
             <groupId>top.continew.starter</groupId>
-            <artifactId>continew-starter-extension-tenant-mp</artifactId>
+            <artifactId>continew-starter-extension-tenant</artifactId>
         </dependency>
 
         <!-- 显式引入本地的 API 文档 Starter -->

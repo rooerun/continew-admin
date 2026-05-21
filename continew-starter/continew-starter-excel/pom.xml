@@ -16,6 +16,11 @@
     <description>ContiNew Starter Excel 文件处理模块</description>
 
     <dependencies>
+        <!-- 核心模块 -->
+        <dependency>
+            <groupId>top.continew.starter</groupId>
+            <artifactId>continew-starter-core</artifactId>
+        </dependency>
         <!-- Hutool 核心模块（核心方法及数据结构包） -->
         <dependency>
             <groupId>cn.hutool</groupId>

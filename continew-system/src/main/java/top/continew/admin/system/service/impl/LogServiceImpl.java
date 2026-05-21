@@ -86,15 +86,16 @@ public class LogServiceImpl implements LogService {
     public void exportLoginLog(LogQuery query, SortQuery sortQuery, HttpServletResponse response) {
         List<LoginLogExportResp> list = BeanUtil.copyToList(this.list(query, sortQuery), LoginLogExportResp.class);
 
-        try{
-            try(OutputStream outputStream = response.getOutputStream()){
+        try {
+            try (OutputStream outputStream = response.getOutputStream()) {
                 String exportFileName = URLUtil.encode("%s_%s.xlsx".formatted("导出登录日志数据", DateUtil
-                        .format(new Date(), DatePattern.PURE_DATETIME_PATTERN)));
+                    .format(new Date(), DatePattern.PURE_DATETIME_PATTERN)));
                 response.setHeader("Content-disposition", "attachment;filename=" + exportFileName);
-                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+                response
+                    .setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
                 ExcelUtils.export(list, LoginLogExportResp.class, outputStream);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             response.reset();
             throw new BaseException("导出登录日志数据失败", e);
         }
@@ -106,15 +107,16 @@ public class LogServiceImpl implements LogService {
         List<OperationLogExportResp> list = BeanUtil.copyToList(this
             .list(query, sortQuery), OperationLogExportResp.class);
 
-        try{
-            try(OutputStream outputStream = response.getOutputStream()){
+        try {
+            try (OutputStream outputStream = response.getOutputStream()) {
                 String exportFileName = URLUtil.encode("%s_%s.xlsx".formatted("导出操作日志数据", DateUtil
-                        .format(new Date(), DatePattern.PURE_DATETIME_PATTERN)));
+                    .format(new Date(), DatePattern.PURE_DATETIME_PATTERN)));
                 response.setHeader("Content-disposition", "attachment;filename=" + exportFileName);
-                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+                response
+                    .setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
                 ExcelUtils.export(list, OperationLogExportResp.class, outputStream);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             response.reset();
             throw new BaseException("导出操作日志数据失败", e);
         }

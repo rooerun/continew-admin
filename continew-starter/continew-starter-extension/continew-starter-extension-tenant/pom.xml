@@ -10,13 +10,28 @@
     </parent>
 
     <artifactId>continew-starter-extension-tenant</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-    <description>ContiNew Starter 扩展模块 - 租户</description>
+    <description>ContiNew Starter 扩展模块 - 租户 - 核心模块</description>
 
-    <modules>
-        <module>continew-starter-extension-tenant-core</module>
-        <module>continew-starter-extension-tenant-mp</module>
-    </modules>
+    <dependencies>
+        <!-- TTL（线程间传递 ThreadLocal，异步执行时上下文传递的解决方案） -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>transmittable-thread-local</artifactId>
+        </dependency>
+        <!-- MyBatis Plus jsqlparser 适配（包含原扩展模块内容） -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
+        </dependency>
+
+        <!-- Dynamic Datasource（基于 Spring Boot 的快速集成多数据源的启动器） -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 </project>

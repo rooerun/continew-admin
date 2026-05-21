@@ -69,11 +69,11 @@ public class ExcelUtils {
     /**
      * 导出
      *
-     * @param list     导出数据集合
-     * @param clazz    导出数据类型
+     * @param list         导出数据集合
+     * @param clazz        导出数据类型
      * @param outputStream 响应对象
      */
-    public static <T> void export(List<T> list,  Class<T> clazz, OutputStream outputStream) throws IOException {
+    public static <T> void export(List<T> list, Class<T> clazz, OutputStream outputStream) throws IOException {
         export(list, "Sheet1", Collections.emptySet(), clazz, outputStream);
     }
 
@@ -84,7 +84,7 @@ public class ExcelUtils {
      * @param sheetName               工作表名称
      * @param excludeColumnFieldNames 排除字段
      * @param clazz                   导出数据类型
-     * @param outputStream                响应对象
+     * @param outputStream            响应对象
      */
     public static <T> void export(List<T> list,
                                   String sheetName,
@@ -129,14 +129,14 @@ public class ExcelUtils {
      * 多 Sheet 页导出
      *
      * @param outputStream 响应对象
-     * @param fileName 文件名
-     * @param sheetMap 多 Sheet 数据（key 为 sheet 名称，value 为数据列表）
-     * @param clazz    导出数据类型
+     * @param fileName     文件名
+     * @param sheetMap     多 Sheet 数据（key 为 sheet 名称，value 为数据列表）
+     * @param clazz        导出数据类型
      */
     public static <T> void exportManySheet(OutputStream outputStream,
                                            String fileName,
                                            Map<String, List<T>> sheetMap,
-                                           Class<T> clazz){
+                                           Class<T> clazz) {
         ExcelWriter excelWriter = FastExcelFactory.write(outputStream, clazz)
             .autoCloseStream(false)
             .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
@@ -148,7 +148,6 @@ public class ExcelUtils {
         }
         excelWriter.finish();
     }
-
 
     /**
      * 导出（内部方法，支持空数据列表）

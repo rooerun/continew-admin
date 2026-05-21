@@ -147,12 +147,7 @@
             <!-- 显式声明使用本地的 Data 相关 Starter -->
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-data-mp</artifactId>
-                <version>${continew-starter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-data-core</artifactId>
+                <artifactId>continew-starter-data</artifactId>
                 <version>${continew-starter.version}</version>
             </dependency>
 
@@ -178,7 +173,7 @@
             <!-- 显式声明使用本地的 Extension 相关 Starter -->
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-extension-crud-mp</artifactId>
+                <artifactId>continew-starter-extension-crud</artifactId>
                 <version>${continew-starter.version}</version>
             </dependency>
             <dependency>
@@ -188,7 +183,7 @@
             </dependency>
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-extension-tenant-mp</artifactId>
+                <artifactId>continew-starter-extension-tenant</artifactId>
                 <version>${continew-starter.version}</version>
             </dependency>
 
@@ -315,7 +310,7 @@
             <!-- 显式声明使用本地的 Extension 相关核心 Starter -->
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-extension-crud-core</artifactId>
+                <artifactId>continew-starter-extension-crud</artifactId>
                 <version>${continew-starter.version}</version>
             </dependency>
             <dependency>
@@ -325,7 +320,7 @@
             </dependency>
             <dependency>
                 <groupId>top.continew.starter</groupId>
-                <artifactId>continew-starter-extension-tenant-core</artifactId>
+                <artifactId>continew-starter-extension-tenant</artifactId>
                 <version>${continew-starter.version}</version>
             </dependency>
 

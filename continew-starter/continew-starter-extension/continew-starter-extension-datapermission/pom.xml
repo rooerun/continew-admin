@@ -19,7 +19,7 @@
         <!-- 数据访问模块 - 核心模块 -->
         <dependency>
             <groupId>top.continew.starter</groupId>
-            <artifactId>continew-starter-data-core</artifactId>
+            <artifactId>continew-starter-data</artifactId>
         </dependency>
 
         <!-- MyBatis Plus jsqlparser 适配（包含原扩展模块内容） -->
